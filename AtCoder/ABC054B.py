@@ -7,5 +7,16 @@ for _ in range(N):
 for _ in range(M):
     B.append(input())
 
-print(A)
-print(B)
+def CheckExist(ai, aj):
+    for bi in range(M):
+        for bj in range(M):
+            if A[ai+bi][aj+bj] != B[bi][bj]:
+                return False
+    return True
+
+for ai in range(N - M + 1):
+    for aj in range(N - M + 1):
+        if CheckExist(ai, aj):
+            print('Yes')
+            exit(0)
+print('No')
