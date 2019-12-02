@@ -65,5 +65,17 @@ for index, value in enumerate(a):
     print(index, value, end=', ') # 0 Mary, 1 had, 2 a, 3 little, 4 lamb, 
 print('')
 
+# zip loop
+questions = ['name', 'quest', 'favorite color']
+answers = ['lancelot', 'the holy grail', 'blue']
+for q, a in zip(questions, answers):
+    print('What is your {0}?  It is {1}.'.format(q, a))
 
+# reversed loop
+for i in reversed(range(1, 10, 2)):
+    print(i)
 
+# key set and sorted loop
+basket = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
+for f in sorted(set(basket)):
+    print(f)
