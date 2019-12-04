@@ -17,12 +17,10 @@ for i in range(len(S) - len(T) + 1):
     if count == len(T):
         save_left = left
         save_right = right
-
-        S[left:right] = T
         ANS = True
-        break
-
+     
 if ANS:
+    S[save_left:save_right] = T
     for w in S:
         if w == '?':
             print('a', end='')
