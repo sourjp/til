@@ -17,10 +17,10 @@ def fib2(n):
     return l
 
 f22 = fib2
-f2 = fib2(100)
+f2_2 = fib2(100)
 print(fib2)
 print('fib2:', fib2(100))
-print('f2:', f2)
+print('f2_2:', f2_2)
 print('f22:', f22(100))
 
 '''
