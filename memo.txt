@@ -1,0 +1,120 @@
+2019/12/06
+    Recursion
+        同じオペレーションが異なる入力によって繰り返される状態
+        繰り返されるにあたって、その出力が小さくなっていく状態
+        基本の状態が必要で、それが終了する条件となる
+
+    Treeで目的の値を検索していくという例ならば下記のような考え方。
+
+    search(root, valueToSearch)
+        if(root equals null) return null
+        else if(root.value equls valueToSearch) return root
+        else if(valueToSearch < root) search(root.left, valueToSearch)
+        else search(root.right, valueToSearch)
+
+    どういったデータ構造で使うか？
+        Stack, Tree(Travarsal, Searching, Insertration, Deletion), Sorting(Quick Sort, Merge Sort), 
+        Divide and Conquer, Dynamic Programming, etc
+
+    Recursive case
+        同じ形式で計算を繰り返すことができる要素
+    Base case
+        繰り返すことができない要素。要は終了するポイント。
+
+    公式チックにすると標準の形式はこうなる
+
+    SampleRecursion (parameter){
+        if(base case is satisfied)
+            return some base case value
+        else
+            SampleRecursion(modified parameter)
+    }
+
+    Recursiveのデータ構造はStack構造、つまりLIFOが起きているといっていい。
+    BaseCaseにたどり着くまではpushでためており、たどり着いたらpopで最後から取り出しながら実行している。
+
+    Sampleとして階乗(Factorial)なんかはわかりやすい
+
+    Factorial(n):
+        if n equals 0
+            return 1
+        return(n * factorial(n-1))
+
+    Factorial(3) -> 3 * ?, Facotrial(2) -> 2 * ?, Factorial(1) -> 1 * ?, Factorial(0) -> return 1
+    3*2                  <- 2*1                 <- 1*1                  <- 1
+
+    次のサンプルとしてはFibonacciを使うのもいい
+
+    fib(n)
+        if n is less than 1
+            return error message
+        else if n is equal to 1 or 2
+            return n-1
+        else
+            return fib(n-1) + fib(n-2)
+
+    fib(4) = fib(3) + fib(2), fib(3) = fib(2) + fib(1) , fib(2) = 1, fib(1) = 0, fib(3) = 1, fib(4) = 2
+
+    Recursive VS Iteration
+    - Space Fileter? No, Yes    Stackをするのでメモリが必要になる
+    - Time efficient? No, Yes   計算をする必要があるため
+    - Ease of code/Problem? Yes, No     共通した計算式を導くためコードもシンプルになり、問題解決もシンプルにすることができる
+
+    使った方がいいケースは？
+        共通した計算式に落とし込める時。要はサブプロブレムとして分解できる時。
+        timeとspaceのoverheadが許容できる時
+        綺麗なコードや解決方法を行いたいとき
+    
+    一方で、複雑さよりもスピードが大事なシステムの時(airbagなど)には適さない。
+
+
+    Algo Run Time
+        Algorithemの良し悪しを判断する軸として効率という観点を持ち込むもの
+        主には効率とは入力に対して答えを出すための計算量という意味で捉えるとイメージしやすい。
+
+        Omega：less than/lowerを意味し、少なくとも入力に対してかかる計算の時間をさす。最低限必要な値なのでリソースもわかる。
+        Big-O: more than/upperを意味し、多くても入力に対してかかる計算の時間をさす。最大現必要な値と考えればいい。
+        Theta: averageを意味し、omegaとbig-oの真ん中にある。 
+
+        O(1), O(logn), O(n), O(nlogn), O(n^2), O(n^3), O(2^n)
+    
+    例えば次のようなバイナリサーチでの計算方法を考える
+
+    BinarySearch(int findNumber, int arr[], start, end):    ... T(n)
+        if(start equals end)    ... T(1)
+            if(Arr[start] equals findNumber)
+                return start
+            else return error message that number doesn't exists in the array
+
+        mid = findMid(arr[], start, end)
+        if mid > findNumber
+            BinarySearch(int findNumber, int arr[], start, mid) ... T(n/2)
+        else if mid < findNumber
+            BinarySearch(int findNumber, int arr[], mid, end) ... T(n/2)
+        else if mid = findNumber
+            return mid
+
+    まず関数をT(n)とした時に、その中の処理は上記のようになる
+        eq1. T(n) = T(n/2) + 1
+            この1は定数倍の物を指している。T(n/2)はnを/2して、ifでどちらかを選ぶため
+        eq2. T(n/2) = T(n/4) + 1
+        eq3. T(n/4) = T(n/8) + 1
+        base. T(1) = 1
+
+    これを展開していく
+        T(n) = T(n/2) + 1
+            = (T(n/4) + 1) + 1
+            = (T(n/8) + 1) + 2
+            = T(n/8) + 3
+
+        これを関数に一般化すると次になる
+        T(n) = T(n/2^k) + k
+        
+        n/2^k = 1とすると、T(1) = 1が代入できるので、kを求める
+            n = 2^k
+            k = log2n
+        kを式に代入するとこうなる。log2の基数である2は定数倍なので考慮しない。
+        T(n) = T(1) + logn
+            = 1 + logn
+        以上を持って下記と計算量が証明される
+        T(n) = logn
