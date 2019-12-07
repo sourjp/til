@@ -1,3 +1,38 @@
+2019/12/7
+    array
+        Dimentional(one, two, three ...)
+
+        one dimensional Arr[4]
+            10, 20, 30, 40
+        two dimensional Arr[3][4]
+            10, 20, 30, 40
+            100, 200, 300, 400
+            1000, 2000, 3000, 4000
+        
+        arrayは連続していることを前提としているため、memoryを確保する際も連続したcellを確保する
+        multi dimesionalの場合も一列で確保されることに注意。これは行列の作り方を考えるとわかりやすい
+        [10,20], [30,40], [50,60] -> 10, 20, 30, 40, 50, 60という列で確保される
+
+    オペレーション
+        Declaring, Instantiating, Initializing e.g. int a[]={10, 20, 30, 40, 50}
+            Declareで確保するRAMの名前を宣言して名前のセルを確保する
+            InstantiatingでRAMから必要な行数分のセルを確保する
+            Initilizingは確保したセルに必要な変数を代入すること
+        Inserting
+            確保しているセルに指定した数値を代入すること
+        Traversing
+            arrayのdataを移動すること
+        Accessing
+            指定したcellにアクセスすること
+        Searching
+            i=0 から増加させて指定したvalueの有無を確認すること
+        Deleting
+            指定sたlocationのdataを削除。削除といっても消去ではなく-2^31のような極端な数値に変わる
+
+    When to Use?
+        data typeが同じものを保存したい時
+        random access dataの場合（要はindexを指定できる場合の方が良い）
+
 2019/12/06
     Recursion
         同じオペレーションが異なる入力によって繰り返される状態
