@@ -1,3 +1,94 @@
+2019/12/8
+    Linked List
+        ArrayとListの違いはListは各データの間に次のセルを示すデータを持っているので、
+        途中のセルが削除されても問題ないが、Arrayの場合は次のデータと接続している前提なので、
+        削除することができない
+        またメモリアクセスする際に、データを検索するときは最初のセルから辿っていきチェックする
+        そのため、Arrayはランダムアクセスができるの反してできないといった違いがある
+
+        Componenct
+            Node ... データと次に接続するセル番号を持っている。最後のノードは終点なので次のセル番号はない
+            Head ... Linked Listの始点であるセルを示す
+            Tail ... linked Listの最後を示す
+        
+        Types
+            Single Linked List ... dataと次のセルの参照先があり、一つ前のセルの参照先を持たない
+            Circular Single Linked List ... 上記に合わせて最後のセルのノードに始点のセルを参照先で持たせている.
+                ゲームのプレイヤーがループするとか。
+            Double Linked List ... dataと一つ前と次のセルの参照先を持つ。始点と終点は参照前後がないのでNULL.
+                ミュージックプレイヤーで前の曲、次の曲って押したい時とか。
+            Circular Double Linked List ... 上記の始点と終点にループになるよう参照先を持たせる。
+                例えばAlt + tabでアプリケーション画面を左右やループして切り返したい時とか。
+
+        Linked Listは次の参照するセルを保持するのでRAMはバラバラに保存することができる
+        Arrayは参照先を持たないためその列で確保する必要があるが、ランダムアクセスができる
+        始点がわかるので + x　とすればアクセスできるため）
+        一方でLinked Listの場合は参照セルを一つずつ辿らないと答えにつかない
+
+        Create
+            まずNode-1にdataを追加するセルを確保して、dataを追加
+            次にHeadとTailをそのセル番号を参照先として保存する  
+
+            create a head, tail, pointer
+            create a blank Node
+            node.value = nodeValue
+            node.next = null
+            head = node
+            tail = node
+        
+        Inserting
+            シチュエーションは３つ、始点と終点と途中にinsertする場合
+            始点 ... headの参照セルを変える
+            始点 ... tailの参照セルを変える
+            中間 ... 一つ前のセルの参照先を変える 
+
+        Delete
+            Node-1を消すと、以降のセルへの参照方法がなくなるので全てがガベージコレクションになる
+            対策として、Headの参照するセルをNode-2で書き換えれば大丈夫
+            最後のNode-Nを消した場合はTailと一つ前のNodeの参照セルが変更される
+            ちなみに最後のNodeしか残ってない状態でLast Nodeを消すとのFast Nodeを消すのは
+            行為は同じに感じるが少し違いがある。なぜなら終点であるということで計算量がO(n)になる。
+            途中を消す場合はセルを一つ先に飛ばせば良い。
+            そうすると削除対象はガベージコレクションとして消去される
+            
+            LinkedList自体が削除されるのではhead, tailがnullになる時
+            この瞬間に全てのdataに対して参照ができなくなるのでガベージコレクション扱いになる
+
+    Circular Single LL
+        SLLとの違いはTailのNodeの参照先がループりしていること
+        最初にNodeを作ったときは、NULLではなく自分自身を参照している
+        言い換えるとNodeが一つなら自分を参照させることでループ構造をつくる
+
+    Double LL 
+        SLLと考え方は同じで、違いは戻るための参照セルが付与されること
+        SLLとの違いはDLL自体の削除でTailとHeadを削除しても
+        Node1, Node2同士が互いに参照し合っているため削除されない
+        そのため全てのNodeの参照を片側を統一して削除する
+        具体的にはprev側の方。これは最初のNodeではNULLのため統一できるから。
+        これによってNodeが疎結合になりガベージコレクションとして削除できる。
+
+    Circular Double LL
+        CSLLとDLLが合体したと思えばいい。
+        これもCDLLの削除の時の注意としてDLLのようにprevを消すだけではだめ。
+        なぜならTAIL-NODEがHEAD-NODEを参照しているので削除ができない
+        なのでTAILのNEXTセルの参照をNULLにしてから
+        全てのPREVのセルをNULLにすれば良い
+
+    TimeComplecity LinledList vs Array)
+        Particulars             Array   LinkedList
+        Create                  O(1)    O(1)
+        Ins at 1st position     O(1)    O(1)
+        Ins at last position    O(1)    O(1)
+        Ins at Kth position     O(1)    O(1)
+        Del from 1st position   O(1)    O(1)
+        Del from last position  O(1)    O(n) / O(1)
+        Del from Kth position   O(1)    O(n)
+        Sear in unstored data   O(n)    O(n)
+        Sear in sorted data     O(logn) O(n)
+        Access nth element      O(1)    O(n)
+        Traverse                O(n)    O(n)
+        Del entire Array/LL     O(1)    O(n) / O(1)
+
 2019/12/7
     array
         Dimentional(one, two, three ...)
