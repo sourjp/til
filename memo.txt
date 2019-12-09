@@ -1,5 +1,45 @@
+2019/12/9
+    Stack
+        Stackは腕輪みたいなもの
+    
+        Last In Fast Out(LIFO)
+            データをpushした場合に、最後のpushしたデータからpopされる
+            Webブラウザの履歴などはまさにそう
+                site1 -> site2 -> site3といったら履歴は3 -> 2 -> 1と戻る
+
+        オペレーション 
+            Create Stack
+                Array or LinkedListによりデータ構造を決定し、処理方法をStack扱いで行う
+                Arrayは簡単に実装ができるが、sizeの調整がで機内
+                LinkedListは柔軟なサイズ調整ができるが、実装は少し面倒。
+
+            Push/Pop
+                stackの頂点を情報として保持する(top of stack)
+                要はpushしてstackするてっぺんの位置を保持する
+                これによってpopするときに指示ができる
+
+                LinkedListのときはHeadがpushされた新しいノードのセルに更新されていく
+                popされたときは一つ前のノードにセルを更新していく
+                ちなみにTailは不要なので存在しない
+
+            isEmpty/isFull
+                dataがない場合はtop of stackがそこにあるので下限が作れる、てっぺんも同じ。
+                なので最初の確保できたdataのサイズ-1が限界のindexとなる。
+
+            Delete
+                Stack自体はLinked List or arrayが削除(null)されれば消去される
+
+                LinkedListの場合はheader = nullによって削除することで
+                全てのセルの参照さきがいなくなるので消去できる
+        When to Use
+            DataをLIFOで扱いたいとき。
+            データを途中に追加したり、ランダムアクセスするときには向いていない。
+
+
 2019/12/8
     Linked List
+        Linked Listは電車みたいなもの
+
         ArrayとListの違いはListは各データの間に次のセルを示すデータを持っているので、
         途中のセルが削除されても問題ないが、Arrayの場合は次のデータと接続している前提なので、
         削除することができない

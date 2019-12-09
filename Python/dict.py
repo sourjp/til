@@ -24,4 +24,9 @@ for k, v in t4.items():
     print(k, v)
 
 # sorted
-print(sorted(t4, ))
+print(sorted(t4))
+
+# get
+print(t4.get('jack'))
+print(t4.get('lucy'))
+print(t4.get('lucy', 'i can\'t find her'))
