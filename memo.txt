@@ -1,3 +1,79 @@
+2019/12/10
+    Queue
+        順番待ちのこと
+        First in First out(FIFO)
+
+    Implementation
+        Array
+            LiniearQueue
+            CircularQueue（LinkedListみたいに前のセルの参照という意味じゃないよ。）
+
+        Linked List
+            LiniearQueue
+            xCircularQueue
+                使わない。なぜならqueueはheadから出ていくので、一つ前のdataを参照する必要がない
+
+
+    プロセス(Array-LIEAR)
+        CreateQueue
+            queueしたいセルの数を決めて確保すれば良い
+        enQueue
+            topofqueueのvalを持たせて末尾をカウントしていけばいい
+        deQueue
+            beigining of queueをdequeueのたびにカウントしていけば良い
+            そしてbeiginingが末尾にたどり着いたら-1に値を戻すことでqueueの位置をループできる
+            ただこれはbeginingが追いかけている間は無駄なのセルのスペースがどんどん増えるのでよくない構造
+        peekInQueue
+            出力を出すだけ。
+        isEmpty
+            begiggning = -1ならis empty
+        isFull
+            topofqueueがラストセルならfull
+        deleteQueue
+            arrayをnullで削除するだけ
+
+    プロセス(Array-CIRCULAR)
+        array-Linear queueだとセルがdequeue処理で無駄が起きるのでその対策
+            方法としてdequeueするたびに左にdataを移動させる方法があるがこれだとO(n)になるのでやめた方がいい
+
+        CreateQueue
+            queueしたいセルの数を決めて確保すれば良い
+        enQueue
+            topofqueueのvalを持たせて末尾をカウントしていけばいい
+            ただしtopofqueueが末尾まで言ったらカウンターを０に値を戻す。
+            要はtop of queueがbeggining of queueを追いかける状態
+        deQueue
+            beigining of queueをdequeueのたびにカウントしていけば良い
+            そしてbeiginingが末尾にたどり着いたら０に値を戻すことでqueueの位置をループできる
+            bigiggning of queueもtop of queueを追いかける状態
+        peekInQueue
+            出力を出すだけ。
+        isEmpty
+            begiggning = -1ならis empty
+        isFull
+            topofqueueがラストセルならfull
+        deleteQueue
+            arrayをnullで削除するだけ
+
+    プロセス(LinkedList-LINEAR)
+        CreateQueue
+            head, tailを作る。メモリ確保は動的なのでこれで。
+        enQueue
+            headとtailにnode cellを書き込む。セルが増えるごとにtailは更新されて、各ノードは次の参照セルが追加される。
+        deQueue
+            Head Queueを更新していけばいい
+        peekInQueue
+            出力を出すだけ。
+        isEmpty
+            Head,Tailの位置を調べればいい
+        isFull
+            linkedLinkなのでなし
+        deleteQueue
+            LLをnullで削除するだけ
+
+    ではQueueでArrayとLinkedListどっちを選んだ方がいいか？
+        結論はArray。大きい理由が最初からメモリを確保しないでいいのでQueueの構造にあっている
+
 2019/12/9
     Stack
         Stackは腕輪みたいなもの
