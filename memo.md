@@ -1,4 +1,25 @@
-2019/12/10
+# 2019/12/11
+    Tree
+        階層構造であること
+        各データは二つにデータが分割される（理想）
+        root nodeがあり分割されている
+
+    Terminologies
+        Root: Node with no parent
+        Edge: Link from Parent to Child
+        Leaf: Node with no children
+        Sibiling: Children of same parent
+        Ansector: means Parent, grand-Parent, great grand parent, and so on for a given a node
+        Depth of node: Length of the path from root to node
+        Height of node: Length of the path from that node to the deepest node.
+        Height of tree: Same as height of root node.
+        Depth of tree: Same as depth of root node.
+
+    Binarty Tree
+
+
+
+# 2019/12/10
     Queue
         順番待ちのこと
         First in First out(FIFO)
@@ -74,7 +95,12 @@
     ではQueueでArrayとLinkedListどっちを選んだ方がいいか？
         結論はArray。大きい理由が最初からメモリを確保しないでいいのでQueueの構造にあっている
 
-2019/12/9
+    いつ使うべきか？
+        Queueの処理をしたいとき。
+        ただし間にデータを入れれないのでそれが要求されないとき
+        またランダムアクセスの要件にある場合は選べない。
+
+# 2019/12/9
     Stack
         Stackは腕輪みたいなもの
     
@@ -112,7 +138,7 @@
             データを途中に追加したり、ランダムアクセスするときには向いていない。
 
 
-2019/12/8
+# 2019/12/8
     Linked List
         Linked Listは電車みたいなもの
 
@@ -205,7 +231,7 @@
         Traverse                O(n)    O(n)
         Del entire Array/LL     O(1)    O(n) / O(1)
 
-2019/12/7
+# 2019/12/7
     array
         Dimentional(one, two, three ...)
 
@@ -240,7 +266,7 @@
         data typeが同じものを保存したい時
         random access dataの場合（要はindexを指定できる場合の方が良い）
 
-2019/12/06
+# 2019/12/06
     Recursion
         同じオペレーションが異なる入力によって繰り返される状態
         繰り返されるにあたって、その出力が小さくなっていく状態
