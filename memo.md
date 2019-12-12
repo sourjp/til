@@ -1,3 +1,96 @@
+# 2019/12/12
+    Tree - Array
+        Create
+            cellへの配置は下記で考えると治る
+            ・Left Child - cell[2x]
+            ・Right child - cell[2x+1]
+            セルサイズは不変のためサイズは注意する
+        Insert
+            ram cellを確認して、空いているセルの位置に入れる
+            例えば9が空いているなら、parentセル 4のchildになる
+        Search
+            arrayであればメモリが連続しているので、探せばいいだけ。
+            linked listでは各ノードはleft, rightのセルしか知らないので
+            該当のデータにたどり着くまで探していく必要がある
+        Traverse
+            In-order
+                InorderTraversal(Index)
+                    if index > lastUsedIndex
+                        return
+                    else
+                    InorderTraversal(index * 2)
+                    print current index.value
+                    InorderTraversal(index * 2 + 1)
+            Pre-order
+                preTraversal(Index)
+                    if index > lastUsedIndex
+                        return
+                    else
+                    print current index.value
+                    preTraversal(index * 2)
+                    preTraversal(index * 2 + 1)
+            PostOorder
+                postraversal(Index)
+                    if index > lastUsedIndex
+                        return
+                    else
+                    postTraversal(index * 2)
+                    postTraversal(index * 2 + 1)
+                    print current index.value
+            Level-order
+                levelOrder(Index)
+                    loop: 1 to lastUserdIndex
+                        print current index.value
+        Delete
+            LLと同じで一番深いせると消したいセルを交換して、深いセルを削除する
+            深いセルはセルの一番最後なのですぐ見つけれる
+
+    Binary Search Tree(BST)
+        自分より左のchildには小さい数字を、右のchildには大きい数字を配置する構造
+        BSTはInsert, Delete, Searchの面でLLがO(n)に対してO(logn)を出せる
+
+        Create
+            作るだけ
+
+        Search
+            これはO(log n)で、なぜなら繰り返すごとにn/2を実施するので(n/2)^kの結果になる
+            これは k = log2nとなり、実施する回数のkの解法としてO(log n)となる
+            このときlog2の2は基数は定数であるため無視することにする
+
+            BST_Search(root, value):
+                if(root is null)
+                    return null
+                else if (root == value)
+                    return root
+                else if(value < root)
+                    BST_Search(root.left, value)
+                else if (value > root)
+                    BST_Search(root.right, value)
+
+        Traverse
+            Pre-Order, In-Oreder, Post-order, Level-Orderの考え方それぞれ適用できる
+
+        Insert
+            Searchと同じアルゴリズムで下に下っていって、NULLの場所に配置すればいい
+            これも同じようにn/2を繰り返すのでO(logn)となる
+
+            BST_Insert(curretnNode, valutToInsert)
+                if(currentNode is null)
+                    create a node, insert valutoinsert
+                else if(valutoinsert <= current node val)
+                    currentNode.left = VST_Insert(currentNode.left, valueToInsert)
+                else
+                    currentNode.right = BST_Insert(curretnNode.right, valuTOInsert)
+                return curretnNode
+
+        Delete
+            Searchと同じ形でDelete Nodeを探す
+            Leafならそれで削除できるが、Nodeだと削除するとchildも削除されるので、
+            childが昇格することでバランスを取るようにする
+            次にどれを選ぶかというとsucsessorsを使う
+            これは全体を見たときに削除したいノードの次の数値のノードに当たる
+
+
 # 2019/12/11
     Tree
         階層構造であること
@@ -16,7 +109,95 @@
         Depth of tree: Same as depth of root node.
 
     Binarty Tree
+        binary treeはzero, one or two childをもつ構造
+        binary treeはこれらのデータ構造の仲間で、BTの理解が根底にある
+            BST, Heap Tree, AVL, Red-Black, Syntax, Tree, Huffman Coding Tree, etc
 
+    Types of BT
+        Strict Binary Tree: If each node has either 2 children or not
+            tree構造
+        Full Binary Tree: if each non leaf node has 2 children and all leaf nodes are at same level
+            全てのleefが同じ深さをもつ状態
+    
+        Complte Binarty Tree:if all levels are completly filled except possibly the last level and the las level has all keys as left as possible
+            一番最後のリーフが左から埋まっている状態
+
+    x = parent cell number
+        Left Child cell = [2x]
+        Right Child cell = [2x + 1]
+
+    BT - LL
+        Create
+            Binarty Tree用のメモリセルを確保するだけ(可変)
+        Insert
+            Insertを実行するときはTraverseと同じ動きを辿ってnullのポジションにデータを入れる
+        Delete
+            root nodeを削除したい場合
+                一番木で深くにあるものと交換して削除する
+                直接消してしまうのは木を維持するために上に１個ずつ持ち上げないといけないから
+                要はchildがないleafを移動させてる問題少ないから。
+        Search
+            考え方はtraversalと同じで、見つけたらreturnする
+        Travese
+            Pre-order(深さ優先探索1)
+                Root, Left Subtree, Right Subtreeの考え方を取ればいい。
+                端的にいうと一番左に進んでいって、段階的に右に進む
+                r(()()())(()())
+                この順番はスタックと同じ。
+
+                preorder Traversal(root)
+                    if (root equls null)
+                        return error message
+                    else
+                        print root
+                        preorderTraversal(root.left)
+                        preorderTraversal(root.right)
+
+                このコードを見ればわかるように再帰関数でleft subtreenにいくことを優先している
+                つまり限りなく左に進み、returnで戻る時に右を参照する。
+                もし右を参照して左の要素があるなら左に進んでそこまでいく。。というのを繰り返す。
+
+                この時recursiveで後回しになったぶんはスタックされていると考えてもわかりやすい。
+
+            In-Order(深さ優先探索2)
+                Left Subtree, Root, Right Tree
+                (()())r(()())
+
+                inOrderTraversal(root)
+                    if (root equals null)
+                        return
+                    else
+                        inOrderTraversal(root.left)
+                        print(root)
+                        inOrderTraversal(root.right)
+
+                難しく見えるが関数で考えると用は順番を変えてるだけ
+
+            Post-order(深さ優先探索3)
+                Left Subtree, Right Subtree, Rootの順番で探索する
+                (()())(()())r
+
+                postOrderTraversal(root)
+                    if (root equals null)
+                        return
+                    else
+                        postOrderTraversal(root.left)
+                        postOrderTraversal(root.right)    
+                        print(root)            
+
+            Level Order Traversal(幅優先探索)
+                レベルの順番で調査をしていくからレベルオーダー
+
+                levelOrderTraversal(root)
+                    create a queue(Q)
+                    enqueue(root)
+                    while(Queue is not empty)
+                        enqueue() the child of first element
+                        dequeue() and print
+
+                root のchildは次のlevel。次のlevelのchildはLとRで二つだが
+                Lのchildを入れてもRが残ってるので、queueに順番に溜められる
+                R, L1, R1, LL2, LR2, RL2, RR2 って感じ
 
 
 # 2019/12/10
