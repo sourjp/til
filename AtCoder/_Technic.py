@@ -1,3 +1,10 @@
+'''
+最大公約数を求める方法
+    python v3.5~からはimport math
+'''
+import fractions
+def gcdcheck(a, b):
+    return fractions.gcd(a, b)
 
 '''
 最小公倍数を求める方法

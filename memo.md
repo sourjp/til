@@ -1,3 +1,317 @@
+
+# 2019/12/15
+    AVL Tree ... Adelson-Velskii and Landis' tree
+        balanced BST
+        一つのノードから見たときに左右のchildの下にある木の高さが最大でも1以下の差である状態
+        これがバランスが取れた状態で、左のchildの高さが2で右のchildの高さが0なら崩れている
+        仮にchildがない場合は-1として考える。
+        バランスが取れていない場合はローテーションが必要となる。
+
+        Create
+            作成 ... BSTと同じ
+        Search
+            O(logn) ... BSTと同じ
+        Traverse
+            O(logn) ... BSTと同じ(ただしlevel-orderでは全部探すのでO(n))
+        Insert
+            rotatioが前提(rotationがないとBSTと同じ)
+            LL ... Left Left condition
+                unblanceになる理由がleft left にあるならrightに昇格するようrotationする
+
+                right Rotate(currentDisbalancedNode)
+                    newRoot = currentDisbalancedNode.left
+                     # balanceの取れてないnodeの左のnodeを昇格させる
+                    currentDisbalancedNode.left = currentDisbalancedNode.Left.Right
+                     # 右にrotateされるバランスの取れていないのnodeのleftに
+                     # 次に昇格させるnodeの右側を結ぶ
+                    newRoot.Right = currentDisbalancedNode
+                     # 新しく昇格するnodeの右側にバランスの取れてなかったnodeを結ぶ
+                     # 最後にそれぞれのheightをcheckしてバランスが取れていることを確認する
+            LR ... Left Right condition
+                unbalaneになる理由がleft rightにあるなら
+                left-rightのnodeを上に昇格させて、元のnodeをleftに降格させる
+                そうするとleft-left conditionになるので一番上を右にrotationさせる
+
+            RR ... Right Right condition
+                left-left conditionの逆と考えればいい
+            RL ... Right Left condition
+                left-right conditionの逆と考えればいい
+        Dlete
+            no child ... 消すだけ
+            delete 1child ... 下のnode/leafを昇格させる
+            delete 2child ... 次のsuceeedとswapさせる
+
+            また削除したときにバランスが崩れたらLL, LR, RR, RLを駆使してrotationを行う
+
+    Binary Heap
+        Bniari treeの１種
+        特徴はlognで最小値、もしくは最大値を探すことができること
+        
+        Heap Property
+            Min-Heap
+                parentに対してchildの二つの数字が大きい状態。つまりrootは最大値になる
+            Max-Heap
+                min-heapの逆。つまりはrootは最小値になる。
+        Complete Tree
+            全てのレベルのが揃っているか最後のレベルは左に詰めている状態
+
+        arrayやlinked listではinsertをする際にO(n)になってしまう（0~nまで検索する必要があるから）
+        
+        Insertion
+            insertは一番下の左づめでBSTが作れるように挿入する
+            その後追加したleafは自分にparentと比較して、
+            min-heapであれば自分の方が小さければswapをくり返して昇格していく
+
+        rootの取り出し
+            最大値や最小値としてrootが抜けた後は、treeの最後の数字をrootに挿入する
+            その後、その数字が適していないければchildと繰り返してswapしていく
+            arrayで作成することでcellの最後をO(1)で見つけて変更できるが、
+            referenced baseだとlog(n)で探す必要があるのでやめた方がいい。
+
+    Trie(トライ)
+        char or stringによるsearch tree
+        これによって文字の予測をするといったこともできる
+            文字入力の履歴や予測、補完など。
+        多くは文字の確認などができる
+
+    Hashing
+        特定数値に対してhashを取得して結果を保存することで
+        同じhashになるならばその答えは同じになるだろうという考え方
+        しかし、hashが重なることで異なる答えが同じtableに保存されることもある
+        そのときには二つの方法で解決する
+        ・chaining
+            linked listとしてdataを同じtableに連結して保存すれば良い
+            hash結果があまりに重なるとllが大きくなってしまう危険はあるが
+            hash table sizeの苦労はない
+        ・open addressing
+            データを違うhash keyに入れ替えを行う
+            ・Linear probing
+                空いてなかったら次の空いているセルに入れる
+            ・Quadric probbing
+                空いてなかったらセルのセル + 1^2, 2^2, 3^2, 4^2, の場所に配置する
+                Linearよりはばらける結果になりやすい
+            ・Double Hashing
+                重複したらもう一つのhash algorithemで異なるhash keyを求める
+            この場合はhash tableが埋まってしまうと埋める場所がなくなるので、
+            一般的には今のhash tableのsizeを２倍にして、今のをcopyして用意する仕組みになる。
+
+    Sorting
+        Sortにはいくつかの検討ポイントがある
+        ・In-Place ... 同じ配列空間の中でソートを行う
+            Bubble Sort
+        ・Out-of-Place ... 違うメモリで配列結果を保存していく
+            Merge Sort
+        ・Stable ... 入力データの順番を崩さすにはソートを行う
+            Insertion Sort
+        ・Un-Stable ... 入力データの順番を崩してソートを行う
+            Quick Sort
+        
+        Bubble Sort ... O(n^2)
+            最初の二つのデータを比較して小さい方を左側に。大きい方を右側にする。
+            これを繰り返すと必ず一番みぎが大きい数字になる。
+            そのため次は一番最後の手前までの順番を同じことを繰り返すと、結果ソートされる。
+
+            使えるケースは、、、
+            ・すでにソートされたデータである場合*
+            ・追加のメモリが取れない場合
+            ・簡単な実装がいい場合
+            ・時間の問題を無視できる場合
+
+        Selection Sort ... O(n^2)
+            配列を全てソートして最小値を抽出して一番左に挿入する
+            次に左から一つみぎから橋までのセルをソートして最小値を左に持っていくを繰り返す
+
+            使えるケースは、、
+            ・追加のメモリが取れない場合
+            ・簡単な実装がいい場合
+            ・時間の問題を無視できる場合
+
+        Insertion Sort ... O(n^2)
+            最初のセルをソート済みとし、次のセルの数値をソート済み配列と比較し
+            正しい位置に挿入を行っていく
+
+            使えるケースは、、
+            ・追加のメモリが取れない場合
+            ・簡単な実装がいい場合
+            ・データが継続的に入力されてくる場合*
+            ・時間の問題を無視できる場合
+
+        Bucket Sort ... O(nlogn) >> O(n) + O(nlogn) + O(n)
+            bucketを作成する
+                このbucketはデータの数の平方根によって決める(sqrt(num))
+            各bucketには次のルールでデータを振り分けする
+                (value * number of bucket) / max value in array
+                例えば３つbucketがあると、自ずと小中大の３種類として振り分けられる
+            各ソートのなかでデータをソートを行う
+                sortはquick sortを使えばlognになる。これをn回繰り返すのでnlogn
+            そしてマージを行う
+                各バケットがランクで正しく分配されている前提なのでマージしても問題ない
+
+            使えるケースは、、
+            。データがばらついている場合。偏りがあると一つのbucketに入りすぎて意味がない。
+            ・bucketによる追加のメモリが気にならない場合
+
+        Merge Sort ... O(nlogn)
+            データの二分割を繰り返し、データが一つになるまで行う
+            その後次のデータと組み合わせてソートを行いくっつけていく
+            このときLとRのセルを一つずつ取り出して小さい方からセルとして選んでいく
+            
+            mergeSort(A, l, r):
+                if r > l
+                    middle m= (l+r)/2
+                    mergeSort(A, l, m)
+                    mergeSort(A, m+1, r)
+                    merge(A, l, m, r)
+
+            merge(A, p, m, r):
+                create tmp array L and R and copy A, p, m, into L and A, m+1, r into R
+                i = j = 0
+                loop:k = pto r
+                    if L[i] < R[j]
+                        A[k] = L[i]; i++
+                    else
+                        A[k] = R[j]; j++
+
+            使えるケースは、、
+            。stable sortで欲しいとき
+            ・平均的にnlognの実行時間がいいとき
+            ・ただLとRのtmp listが必要なのでspaceの懸念はある
+
+        Quick Sort ... O(nlogn)
+            pivotという起点を決めて、その数字より大きい数字をみぎ、小さい数字を左と分ける
+            これを左右それぞれの残りの数値にpivotを元に分類することを繰り返せば必ずソートされる
+            数字をソートする際には左端からpivotと比較して、
+            小さい数字を左にinsertを繰り返す、このときiとして端を保存しておくことで
+            swapを繰り返す。
+            最後までソートできたたらpivotに出会うのでpivotをiの位置と交換する
+            pivotは一番右端を利用するのが基本。
+
+            QuickSort(A, p, q)
+                if(p < q)
+                    r = patition(A, p, q)
+                    QuickSort(A, p, r-1)
+                    QuickSort(A, r+1, p)
+
+            Partition(A, p, q)
+                pivot = q
+                i = p-1
+                for (j = p to q)
+                    if (A[j] <= A[pivot])
+                        increment i and swap(A[i], [j])
+
+            使えるケースは、、
+            。unstable sortでもいいとい（つまり同じ数字のデータがあるときは適さない）
+            ・平均的にnlognの実行時間がいいとき
+            ・余計なspaceを取りたくないとき         
+
+        Heap Sort ... O(nlogn)
+            Heap BTを使ったソートの方法
+            min-heapであればrootが必ず最小値なのでそれを一つずつ抜き出せばいい。
+            max-heapであればreverseされたソート結果になる
+
+            使えるケースは、、
+            。unstable sortでもいいとい（つまり同じ数字のデータがあるときは適さない）
+            ・余計なスペースを使いたくないとき
+
+        Sorting Chart
+            要件に応じた取捨洗濯が重要
+            ミッションクリティカルならTimeが大事。
+            データ構造の維持が大事ならSatble。
+            メモリが足りないならSpaceが大事
+
+                        Time        Space   Stable
+            Bubble      O(n^2)      O(1)    Yes
+            Selection   O(n^2)      O(1)    No
+            Insertion   O(n^2)      O(1)    Yes
+            Bucket      O(nlogn)    O(n)    Yes*
+            Merge       O(nlogn)    O(n)    Yes
+            Quick       O(nlogn)    O(n)*   No
+            Heap        O(nlogn)    O(1)    No
+
+    Graph
+        VとEによって表されるデータ構造
+        Vはvertices(頂点)でEはEdgeの省略。要はVは場所を示し、Eは場所から場所の間のリンクを示す。
+
+        unweighted/weighted Graph
+            edgeに対してコストがあること
+            weightedには正負があるのでpositiveだけか、negaiveも含まれるかで分類される
+        Undirected/directed Graph
+            V->Vと１方向しかいけなかったり、両方向行けたりといった制限がある状態
+        cyclyic graph
+            ループする箇所があること
+        Tree or DAG(Directed Acyclic Graph)
+            これは特定のスタート地点からだと同じ場所に戻ってこれない場合に作れるtree構造
+
+        グラフを作成するには二つの方法がある
+            Array matrix
+                グラフを示す時には二次元マップを作るといい
+                例えば A-Bで行き来できるならばフラグを1にするなど。
+                わかりやすいのはこっちだがarrayなので拡張が難しい。
+            List
+                これは特定の地点それぞれに対して、繋がっている場所をリストとしてアペンドさせる
+                データが追加されたり削除されることが多いならばlistの方が適しているが難解。
+
+        BFS algorithem ... Breadth First Search // 幅優先探索
+            queueのデータ構造を使う
+            訪れる候補をqueueにためて、１訪れる可能性が隣にあればそれもqueueにつめていく
+
+            BFS(G) 
+                while all the verticies are not explored, do
+                    enqueue(any vertex)
+                    while Q is not empty
+                        p = dequeue
+                        if p is unvisited
+                            prit p and mark p as visited
+                            enqueue(add adjacent unvisited verticies of p)
+            
+        DFS algorithem ... Depth First Search // 深さ優先探索
+            stackのデータ構造を使う
+
+            DFS(G)
+                while all the vertices are not explored, do
+                    push(any vertex)
+                    while Stack is not empty
+                        p = pop
+                        if p is unvisited
+                            print p and mark p as visited
+                            push(all unvisited adjacent vertices of p)    
+        BFS VS DFS
+            ゴールが深いところにあるならDFS
+            ゴールがスタートの近くにあるならBFS
+                要件に応じて選び分けれるのがベスト
+            両方とも計算量はO(E+V)になる        
+
+        Topological Sort
+            dataの依存性を見つけるときのアルゴリズム
+            A > B > C ならCにはBが必要で、BにはAが必要ということ。
+            このときはCからstackで埋める。なぜならAやBは最後まで行かない限り
+            何に依存しているかがわからない。Z > Aかもしれない。
+            ただケツから行けば確実にAが最後だとわかる。
+
+            topologicalSort(G)
+                for all the nodes
+                    if this Vertex is not visited
+                        topologicalVisit(node)
+                pop stack
+
+            topologicalisit(currentNode)
+                for each neighbour of currentNode
+                    if neighbor is not visited
+                        topologicalVisit(neighbour)
+                mark currentNode as visited and push node in stack
+
+        Singile Source Shortest Path(SSSP)
+            目的のゴールまでにどれぐらいのコストでたどり着けるのか？
+
+            BFS for SSSP
+                各verticesまでのコストを計算する
+                ただこれはunweighted-undirectedかunweighted-directedの２種類でしか動かせない
+                なぜならBFSはnodeに訪れたことを記録して道を探すため、
+                shortpathが他にあってもそれを探索することができない
+            
+            DFS
+
+
 # 2019/12/12
     Tree - Array
         Create
