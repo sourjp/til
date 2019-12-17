@@ -9,3 +9,5 @@ print(t2, type(t2))
 print(t3, type(t3))
 print(t4, type(t4), x, y, z)
 
+a = (lambda x: x *(x+1)) 
+ 

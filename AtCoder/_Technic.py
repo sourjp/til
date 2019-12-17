@@ -28,3 +28,19 @@ for op1 in op:
             if eval(result) == 7:
                 print(result + '=7')
                 exit()
+
+'''
+二次元配列になるように受け取る方法
+'''
+Row=int(input())
+
+List=[list(map(int,input().split())) for i in range(Row)]
+# 1 わかりやすい
+
+List=[[int(j) for j in input().split()] for i in range(Row)]
+# 2 分かりづらい
+
+List=[]
+for i in range(Row):
+    List.append(list(map(int,input().split())))
+# 3 基本形

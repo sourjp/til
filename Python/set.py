@@ -1,6 +1,7 @@
 l = set([4, 5, 6, 7, 8, 9])
 ll = [0, 1, 2, 3, 4, 5]
 ll = set(ll)
+lll = {1, 2, 3, 4, 5}
 
 print(l, type(l))
 print(ll, type(ll))

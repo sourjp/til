@@ -1,4 +1,192 @@
+# 2019/12/17
+    Greedy Algorithem
+        局所最適解を求めていき、最終的に全体最適解に導くこと
+        例えばソートであれば全体の配列を半分にしてそれぞれにソートして
+        まとめていくことのイメージに近い
 
+    Activity Selection Problem
+        start, endが記載されたアクティビティの羅列から、最大に実行できるアクティビティを求める問題
+        簡単には全パターンを試すと答えは出るが現実的ではない
+        この時endという点にだけ注目すれば最適な答えが出る
+        なぜならstartするにはendが来ないと開始できない。
+        startが極端に遅い場合はendも極端に遅い。つまりendでsortすれば
+        段階的にstart, endを処理することができる。
+
+        このことからendをsortすれば全パターン試さずに
+        １パターンという局所最適解が常に全体の最適解になることを貪欲法の一例として示される
+
+    Coin Change Problem
+        特定の金額を支払いたいときに最小のコインの枚数で支払える条件を求める問題
+
+        貪欲法で言われるのは一番金額の高い硬貨から支払っていけば最適解にたどり着くこと
+        ただし条件として候補となる硬貨が隣の金額で割り切れること。
+        つまり倍数であることが条件となる。
+
+    Fractional Knapsack Problem
+        itemにvalueとweightのパラメータがあり、ナップサックの最大Wを超えないように
+        最大のvalueを求める方法
+
+        まずitem単位にvalue/weightで同じ単位での価値の違いを求める(Density)
+
+
+    Divide and Conquer
+        問題を小さい形に分解できるなら、一つずつ最適解を求めて行って、
+        最終的に結合することで最適な結論に至るという考え方
+        e.g. Fibonacci, MergeSort
+
+
+# 2019/12/16
+    Graph
+        DFS for SSSP
+            最後までいってから戻ってしまうため、近い頂点があっても気づくことができない
+        
+        Dijkstra for SSSP
+            コストの計算をし、より小さい値があれば更新をする
+            各頂点は１回だけ評価する。評価する際には全体から最小であれば評価を開始する
+            miniHeapを使うことで、最小値から常にスタートすることができる
+            ただしこれはweighted がpositiveの場合のみ。
+            なぜならnegativeだと無限に最小値になる方法がありループしてしまうから。
+            厳密にはnegativeの値でループできてしまうグラフの場合。
+
+            Dijikstra(G)
+                Set the distance of all the vertices as inifinite and source vertex as 0
+                save all the vertics in miniheap
+                do until miniheap is not empty
+                    current vertex = extract from miniHeap
+                        for each neighbour of curretnVertex
+                            if currentVertex's distance + currentEdge < neighbor's distance
+                                update neighbor's distance and parent
+
+        BellmanFord for SSSP
+            全てのケースに対応できる
+            negative cycleを検知する仕組みを入れて、その時に全ての結果を出力する
+
+            BellmanFord(G):
+                set all the vertex distance to infinite and source as 0
+                for 1 to V-1:
+                    for each edge(u, v): // if current of V is greater than current weight of U + current edge
+                    if d(V) > d(u) + w(u, v)
+                        d(V) = d(u) + w(u, v)
+                        update parent of V
+                
+                for each edge(u, v) // v-1で最適化されているので、１回iterationして数字が変わるなら、それはnegative cycleが含まれるという判断
+                    if d(V) != d(u) + w(u, v)
+                        then report exsitance of negative-weight cycle
+
+                print all vertex
+
+            iterate回数は必ずV-1となる
+                一番遠いシチュエーションは最初のEdgeは評価ずみで考えると、
+                V-V-V-V-Vと一直線にした状態なのでV-1となる。
+                またそれまでの間にコストは最適化されるから。
+
+        BFS vs Dijkstra vs BellmanFord
+            BFSはunweightedしか使えない、Dijkstraはnegatvie cycleに対応しない
+            BellmanFordは全てに使える
+
+            BFSはunwrighted graphに使える
+            Dijkstraはweighted graphに使える
+            Negative CycleにはBellmanFordが使える
+
+            なぜなら下に行くほどアルゴリズムが大変なので、上の方がコストは低い
+            またVFS, DijkstraはO(V^2)で、BellmanFordはO(VE)ではある。
+            ただ割りにあった構築の方がいい。
+
+        APSP ... All Pairs Shotest Path First
+            今までは一つのソースからゴールまでの最短距離を計測した
+            しかしAll pairsとあるように全ての頂点からそれぞれに対してのコストを計算する場合、今まで学んだBFS, Djikstra, Bellman Fordでは頂点の数だけ試す必要がある。
+            次のアルゴリズムはそれに対する対応策となる。
+
+            Floyd Warshall
+                matrixを作成し下記のアルゴリズムの概念でイテレーションを繰り返す
+
+                if D[u][v] > D[u][via X] + D[via X][v]
+
+                初期のmatrixでは隣り合ったコストは与えられるので、それを埋める。
+                隣り合っていないのverticsはコストがわからないので、
+                via Xが機能する。[a][c] [c][d]と取ることでc経由でa-dのコストがわかる
+                このvia Xは全てのnodeをいれて結果を出すため、計算量は自ずと大きくなる
+                for u
+                    for v
+                        for via X
+
+                動作する条件は各ノードに必ず到達できる方法がある場合
+
+            FloydWarshall(G)　... O(v^3)
+                initialize a tabe of size V x V: D with inf
+                copy D from G
+                for k=0 to n-1 // run the loop as many time as number of vertices
+                    fro i=0 to n-1 // run the loop such that we visit each cell in 2D array in row wise fashion
+                        for j=0 to n-1
+                            if D[i][j] > D[i][k] + D[k][i] then
+                                D[i][j] = D[i][k] + D[k][j]
+                    return D
+
+            ただしgraphにネガティブサイクルがある場合は動作しない
+                これはDijkstraと同じでループをすることで永遠と低い数値を更新してしまうから
+
+        BFS vs Dijiktra vs Bellman FOrd vs FloydWarashall for APSP
+            BFSはunweighted向け。O(V^3)だが実装が簡単だから。
+            Dijkstraは適さない
+            BellmanFordはWeighted Graph(negative cycleがある場合)はこれしかない
+            FloydWarashallはWeighted Graph(no negative cycle)はこれ。実装が簡単だから。
+
+        Disjoint Set
+            素集合を作るためのアルゴリズムでMSTに使える
+            これによってunionを頂点同士の接続とみなし、unionないに同じ頂点が現れるとループと判定できる
+            ・makeset : initializeで頂点の分のセルを確保する
+            ・findset : 与えた二つの頂点が同じunionに所属しているか確認する
+            ・Union : 与えた二つの値を一つのunionに変更する
+
+        Minimum Spanning Tree
+            ループしているようなグラフの場合に、そのVehiciesに対して全体から一番最小コストのエッジだけを選択していく方法
+            ただしこれは最小コストだけのエッジを選ぶので、全体の道順から考えて最適でないコスト計算結果になる場合がある
+            アルゴリズムのアイデアは２種類ある
+
+            Kruskal
+                greedy algorithem(貪欲法)
+                エッジ全体から最小の値から順番にリンクを選んでいく。
+                この時エッジ同士を結んでループになるならば選択をしないという仕組み
+                結果最小コストのリンクだけを選んで、ループしないという結果になる
+
+                MST-Kruskal(G)
+                    for each vertex: Makeset(X)
+                    sort each edge in no-decreasing order by weight // sortなどすることで最小値からループを回せる
+                    for each edge(u, V) do:
+                        if findSet(u) != findSet(x)
+                            Union(u, v)
+                                cost = cost + edge(u, v)                
+
+                まずmakesetでinitializeして、各頂点を評価する
+                評価した同士をunionとしてくっつけていき、同じ頂点が同じunionに入ろうとしたらループとしてスキップする
+                その結果、ループなしで接続することができる
+
+            Prim's
+                各Vehicleに到達した時に接続している頂点全てのedgeの更新有無を確認する貪欲法
+
+                MST-PrimS(G)
+                    create a PriorityQueue(Q)
+                    Insert all the vertices into Q such that key value of starting vertex is 0 and others in infinite
+
+                    while Q is not empty
+                        curretnVertex = dequeue(Q)
+                        for every adjacent unvisited Vertex of currentVertex
+                            if current weight of this adjacent vertex is more than current edge, then update adjacent vertex distance and paretn
+                        mark curretnVertex as Visited
+                    print all the vertices with weights
+
+            Prims vs Kruskal
+                edgeに注目して確認をしていく
+                一方は頂点に注目して確認をしていくという構造の違いぐらい。
+
+    Magic Framework
+        Problem Statement
+            Greedy Choice
+            Optimal substrcture -> apply Divide and Conquer
+                                -> Overlapping subproblem
+                                -> Apply Dynamic programming
+            Apply Brute Force
+            
 # 2019/12/15
     AVL Tree ... Adelson-Velskii and Landis' tree
         balanced BST
