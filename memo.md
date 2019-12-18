@@ -1,3 +1,186 @@
+# 2019/12/18
+    Number Factor
+        与えられた入力に対して、整数を組み合わせてそれになるのは何パターンあるか？
+
+        例えば n=5　で入力が 1, 3, 4ならば次のように分解する
+        この結果から答えは6種類となる。
+        つまり、それぞれの1, 3, 4のパターンに対する最適解を出して
+        それらの合計が答えになる。
+        こう行った要素分解ができることがDvide and Conquerの1種となる
+
+        5 - 1 = 4 {1, 1, 1, 1}, {1, 3}, {3, 1}, {4}
+        5 - 3 = 2 {1, 1}
+        5 - 4 = 1 {1}
+
+        例えば8で1, 3, 4ならば、このように小さい問題に分解していくことができる
+        8 --- 7 --- 6(5, 3, 2), 4, 3
+           +- 5 --- 4, 2, 1
+           +- 4 --- 3, 1, 0
+
+    House Thief
+        泥棒が最大の価値を出す盗み方は何か？
+        制限として隣り合った家からは盗みができない
+        input: {6, 7, 1, 30, 8, 2, 4}
+        will steal: 7, 30, 4
+
+        これも小さい問題に分割する。
+        考え方としては,
+        今のindexを取った時 + 一つとばした先の最大評価を選択
+        もしくは今を取らなかった時の次の配列からの最大評価の
+        どちらか高い方が最適解。
+        これを再帰的に繰り返すと次のように分解できる
+        そうすると同じ問題が多く取ることができる
+
+        {6..4}
+        - {6} + {1..4}
+            - {1} + {8..4}
+                - {8} + {4}
+                - {2, 4}
+            - {30..4}
+                - {30} + {2, 4}
+                - {8..4}
+                    - {8} + {4}
+                    - {2, 4}
+        - {7..4}
+            - {7} + {30..4}
+            - {1..4}
+
+    Convert One String to Another
+        二つのstringが与えられ、いくつのcharを変更すれば同じ問題になるか？という問題
+        次のようの問題が与えられたそれぞれ最適解があるが、それは全体を見ているからわかる
+        ただ各問題には共通したルール(F)がある。
+
+        table, tgable // delete F(2, 3)
+        table, tble // add F(3, 2)
+        table, tcble // replace F(3, 3)
+
+    Zero/One Knapsack
+        Fractionalではないので、取るか取らないかを選ぶ
+        value: {31, 26, 72, 17}
+        weight: {3, 1, 5, 2}
+        cap: 7
+
+        これもhouse thiefと同じ考え方をする
+        つまり小さいく最大価値を求めて行って、大きい価値を選択して行けばいい
+
+        {31..17} // return 98(26, 72)
+        - {31} + {26..17, w(7 - 3) // return 43
+            - {26} + {72, 17, w(4 - 1)} // return 43(26 + 17)
+                - {72} + {17, w(3 - 5)} // break
+                - {17, w(3 - 2)} // return 17
+            - {72, 17, w(4)} // return 17
+                - {72} + {17, w(4 - 5)} // break
+                - {17, w(4 - 2)} // return 17
+        - {26..17, w(7)} // return 98
+            - {26} + {72, 17, w(7 - 1)} // return 98(26 + 72)
+                - {72} + {17, w(6 - 5)} // return 72
+                    - {17, w(1 - 2)} // return break
+            - {72, 17, w(7)} // return 89
+                - {72} + {17, w(7 - 5)} // return 89(17 + 72)
+                    - {17, w(2 - 2)} // return 17
+                - {17, w(7 - 2)} // return 17
+
+    Longest Common Subsequence
+        stringが二つ与えられ、sentenceが特定のcharを削除したら
+        もう１方のシーケンスと同じ文字になる最大値は何か？
+
+        s1: elephant, s2: eretpat -> delete r, t -> eepat
+
+        これの考え方もHouse Thiefと同じ
+        まずs1[0] == s2[0] を比較して、==なら次のsequence
+        s1[1] == s2[1]を比較してnotならs1[2] == s2[1] or s1[1] == s2[2]の場合がある
+        これを繰り返していくことで最終的に全ての文字列を比較できるので、
+        s1[i] == s2[j]でcount1もしくはstringとして追加して積み上げれば答えになる。
+
+    Longest Palindromic Subsequence
+        与えられた文字列から回文になる最大の長さは何か？という問題
+        ELRMENMET -> EMEME
+
+        これもlonget common subsequenceと同じ考え方
+        前後から進んでいけばいい。
+        s1[0] == s[-1] の比較を上と同じアルゴリズムで続ければいい
+        s[1] == s[-1] or s[0] == s[-2]て感じ
+
+    Longest Palindromic Substring
+        これは最長のpalindromicをだす
+
+        ABCYRCFBTUA
+        subsequence: ABCYCBA
+        substring:  A whatever
+
+        ABCBDならsubstring BCBである
+        これらを求める時には両はしから同様にイコール評価するが、
+        カウントする前提として残った配列が回文であることが前提になる
+        なのでそれを再帰的に掘っていき評価うsる
+
+    Min Cost to reach last cell in 2d array
+        要は際低コストでの迷路探索である
+        スタートが左上でゴールが右下のような例
+        これであれば右下のゴールにたどり着くには上からか左からかでないと辿れない
+        なのでこれを再帰的に解析していく
+
+        int findMinCost(int cost, int row, int col)
+            if(row == -1 || col == -1)
+                return MAX_VALUE
+            if row == 0, col ==0)
+                reutrn cost[0][0]
+            minCost1 = findMinCost(cost, row-1, col)
+            minCost2 = findMinCost(cost, row, col-1)
+            int minCost min(minCost1, minCost2)
+            currentcellcost = cost[row][col]
+
+            return minCost + curretnCellCost
+
+    Number of paths to last cell with given cost
+        迷路の探索問題で最小の値になるコストが複数あった場合にどのようにカウントするか？
+        前提として最小コストがわかっている状態。
+        この場合であれば各セルにたどり着くのに指定のコストでどうすればたどり着けるか？を繰り返せば答えになる
+
+
+    Dynamic Programming
+        すでに計算された結果を再利用することで全体の計算量を削減する手法
+        Divide and Conquerと相性がいい
+            なぜならFibonacciみたいに同じ計算を繰り返すことが多いからである
+
+        Top-down, Bottom-up Approach
+            これはメモ化したセルを上からもしくは下から参照することを開始して
+            徐々に足りないセルを埋めていく方法
+
+            Top/Downで比較するとTopの方がイメージがしやすいのでインプリがしやすい
+            ただしスピードはbaseまで掘っていかないといけないのでTop-Downの方が遅い
+            また再帰的に見ていくのでstackするmemory spaceが必要(ただいうほどではない）
+            なので、早くインプリするならtop-downだし、
+            効果の高いもの出ないとダメならbottom-up
+
+            ただbottom-upはデータがどのように導出されているくかをわかった上でないと書くことは難しい。そのためtop-downからbottom-upにしていくことを考えるといい
+
+
+    Number Factor Problem
+        これも構造化されたデータで、同じ結果を利用するため、DPの効果がある
+        これは大きい数字から0に向かって再帰的に導出される
+        つまり0から目的の数字まで計算して行けば結果的に導出される
+
+    House Thief Problem
+        同様にdpを使うことができる
+        この場合は左の配列から再帰的に進んでいって右から答えが返ってくる
+        なのでbottom-upをするなら右の配列から最大値を計算していくことで導出される
+
+    Convert One String to Another
+        これも同じで、文字の比較をしている「結果」がDPとなる
+        この場合はbottom-upにするには右下から左上に上がっていくデータ構造になる
+
+    Zero One knapsack
+        できなくはないが、あまり効果はない。
+
+    Longest Common Subsequence, Longest Palindromic Substring/Subsequence
+        Convert Oneと同じで文字のセル比較がTrue/Falseで残せる
+
+    Min Cost to reach last cell in 2d array, Number of paths to last cell with given cost
+        指定のセルにたどり着くまでの最小値という意味ではDPの効果がある
+
+    
+
+
 # 2019/12/17
     Greedy Algorithem
         局所最適解を求めていき、最終的に全体最適解に導くこと
@@ -25,6 +208,7 @@
     Fractional Knapsack Problem
         itemにvalueとweightのパラメータがあり、ナップサックの最大Wを超えないように
         最大のvalueを求める方法
+        これはFractionalなので分数として分解できる状態（つまり割合で選べる)
 
         まずitem単位にvalue/weightで同じ単位での価値の違いを求める(Density)
 
