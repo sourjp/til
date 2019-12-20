@@ -1,3 +1,29 @@
+n, yen = map(int, input().split())
+
+stop_calc = False
+limit_tt = yen // 10000
+
+for i in range(limit_tt+1):
+    limit_ft = n - i
+
+    for j in range(limit_ft+1):
+        check = yen - (10000*i + 5000*j)
+
+        if check%1000 == 0 and 0 <= check//1000 <= limit_ft - j:
+            k = check // 1000
+
+            if n == i+j+k:
+                stop_calc = True
+                break
+
+    if stop_calc:
+        break
+
+if stop_calc: print(i, j, k)
+else: print('-1 -1 -1')
+
+
+'''
 num, yen = map(int, input().split())
 
 for i in range(num + 1):
@@ -22,3 +48,4 @@ for i in range(num + 1):
                         exit()
 
 print(-1, -1, -1)
+'''

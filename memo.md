@@ -1,3 +1,31 @@
+# 2019/12/19
+    Array in Python
+        List, Tuple, Set
+            slice of listで参照渡しとして同じエレメントを見ている
+            なので例えば以下の場合は全部同じゼロのエレメントを見ている
+            
+            counter = [0] * 8
+
+            shallow copy
+                同じelementを参照するlistとしてコピーするので参照渡しになる
+            deep copy
+                別のエレメントとして値を保存するので値渡しになる
+
+
+        Dynamic Array
+            Pythonのarrayはdataが増えると自動でarrayのcellを拡張してくれる
+
+            Length:   0; Size in bytes:   72
+            Length:   1; Size in bytes:  104
+            Length:   2; Size in bytes:  104
+            Length:   3; Size in bytes:  104
+            Length:   4; Size in bytes:  104
+            Length:   5; Size in bytes:  136
+
+
+
+
+
 # 2019/12/18
     Number Factor
         与えられた入力に対して、整数を組み合わせてそれになるのは何パターンあるか？

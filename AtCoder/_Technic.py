@@ -44,3 +44,23 @@ List=[]
 for i in range(Row):
     List.append(list(map(int,input().split())))
 # 3 基本形
+
+
+'''
+桁あたりを数値として取得して計算する方法
+'''
+n, a, b = map(int, input().split())
+
+ans = 0
+cnt = 0
+for i in range(a, n+1):
+    res = 0
+    num = i
+    while num > 0:
+        res += num % 10
+        num //= 10
+
+    if res >= a and res <= b:
+        ans += i
+
+print(ans)
