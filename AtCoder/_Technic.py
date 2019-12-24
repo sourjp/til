@@ -64,3 +64,13 @@ for i in range(a, n+1):
         ans += i
 
 print(ans)
+
+
+'''
+chrセットにASCIIコードの数字を当てると数字を文字に変更できる
+'''
+String="abc"
+[print(chr(i), end=" ") for i in range(ord('a'), ord('z')+1) if chr(i) not in String]
+
+[print(chr(i), end=" ") for i in range(ord('a'), ord('z')+1)]
+
