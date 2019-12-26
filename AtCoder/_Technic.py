@@ -74,3 +74,21 @@ String="abc"
 
 [print(chr(i), end=" ") for i in range(ord('a'), ord('z')+1)]
 
+
+'''
+A-Z, a-zを取得する方法
+'''
+
+### patern1
+import string
+letters = string.ascii_lowercase
+print(letters)  # abcdefghijklmnopqrstuvwxyz
+
+
+
+### patern2
+print(sorted(map(chr,range(97,123)))) # ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
+### patern3
+print(sorted(map(chr,range(65,91)))) # ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
