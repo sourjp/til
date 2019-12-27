@@ -92,3 +92,11 @@ print(sorted(map(chr,range(97,123)))) # ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
 ### patern3
 print(sorted(map(chr,range(65,91)))) # ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
+
+'''
+Digit Sum
+'''
+
+x = '1234'
+result = sum(map(int, x))
+
