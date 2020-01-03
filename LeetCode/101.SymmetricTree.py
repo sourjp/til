@@ -1,7 +1,11 @@
-'''
+''' https://leetcode.com/problems/symmetric-tree/
 
 Runtime: 36 ms, faster than 60.85% of Python3 online submissions for Symmetric Tree.
 Memory Usage: 12.7 MB, less than 100.00% of Python3 online submissions for Symmetric Tree.
+
+Solution1 is compare leftside and rightside one by one. The point is null object. So alternatively add False object.
+Solution2 is more impressive way. Function doesn't make additional list , it just compare each value one by one.
+
 '''
 # Definition for a binary tree node.
 # class TreeNode:
@@ -54,3 +58,25 @@ class Solution:
                         return False
                 
         return True
+
+'''
+Runtime: 32 ms, faster than 82.29% of Python3 online submissions for Symmetric Tree.
+Memory Usage: 12.9 MB, less than 100.00% of Python3 online submissions for Symmetric Tree.
+'''
+
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+        
+        def reverse(t1, t2):
+            if not t1 and not t2:
+                return True
+            
+            if not t1 or not t2:
+                return False
+            
+            return t1.val == t2.val \
+               and reverse(t1.left, t2.right) \
+               and reverse(t1.right, t2.left)
+                
+        return reverse(root, root)
+                    

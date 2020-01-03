@@ -60,14 +60,11 @@ print(ans)
 '''
 n = int(input())
 messages = [[] for i in range(n)]
-
 for i in range(n):
     num = int(input())
-
     for j in range(num):
         person, truth = map(int, input().split())
         messages[i].append([person-1, truth])
-
 print(messages)
 ans = 0
 for i in range(2**n):
@@ -79,7 +76,6 @@ for i in range(2**n):
     for k in range(n):
         if (check >> k) & 1:  # k is truth
             message = messages[k]
-
             for person, truth in message:
                 if (check>>person)&1 == truth:
                     continue
@@ -88,12 +84,9 @@ for i in range(2**n):
                     break
         else:  # k is not truth
             continue
-
         if not possible:
             break
-
     if possible:
         ans = max(ans, count)
-
 print(ans)
 '''

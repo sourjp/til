@@ -40,3 +40,7 @@ print("AN ALL CAPS SENTENCE".lower())
 
 print("spam, eggs, ham".split(", "))
 #prints "['spam', 'eggs', 'ham']"
+
+print('C:\some\name')
+print(r'C:\some\name')
+print('C:\some\\name')

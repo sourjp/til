@@ -1,3 +1,25 @@
+# 2019/1/3
+    activate状態 -> deaactivate
+    pyc
+    sys.pathの初期化における参照先は？
+    math.cos, math.pi
+    log moduleは？ -> logging
+    import sys.os
+    パッケージとは？
+    dir()は？ -> module定義の名前
+    Tab保管
+
+    from time.it import Timer
+    import unittest
+
+    from array import array
+
+    from collections import deque
+
+    from bisect
+
+    from heapq import heapify, heappop, heappush
+
 # 2019/12/19
     Array in Python
         List, Tuple, Set
