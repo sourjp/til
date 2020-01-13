@@ -1,43 +1,48 @@
-import collections
-
-def dfs(queue, ans):
-    foot_print = [False for _ in range(n)]
-    for val in tree[0]:
-        queue.append(val)
-    ans[0] = counter[0]
-    foot_print[0] = True
-
-    while queue:
-        node = queue.popleft()
-        if foot_print[node] == True:
-            continue
-
-        else:
-            for val in tree[node]:
-                queue.append(val)
-            ans[node] = counter[node] + ans[node-1]
-            foot_print[node] == True
-
-
 n, q = map(int, input().split())
-
 tree = [[] for _ in range(n)]
-ans = [0 for _ in range(n)]
-
 for _ in range(n-1):
     a, b = map(int, input().split())
     tree[a-1].append(b-1)
+    tree[b-1].append(a-1)
 
-counter = [0 for _ in range(n)]
+cost = [0 for _ in range(n)]
 for _ in range(q):
-    p, x = map(int, input().split())
-    counter[p-1] += x
-    queue = collections.deque()
+    pos, point = map(int, input().split())
+    cost[pos-1] += point
 
-    dfs(queue, ans)
+memo = set([0])
+stack = [0]
 
-print(*ans)
+while len(stack) > 0:
+    cur_node = stack.pop()
+    cur_cost = cost[cur_node]
 
+    for node in tree[cur_node]:
+        if node not in memo:
+            memo.add(node)
+            cost[node] += cur_cost
+            stack.append(node)
+
+print(*cost)
+
+'''
+n, q = map(int, input().split())
+
+tree = [0 for _ in range(n)]
+for _ in range(n-1):
+    a, b = map(int, input().split())
+    tree[b-1] = a-1
+
+cost = [0 for _ in range(n)]
+for _ in range(q):
+    pos, point = map(int, input().split())
+    cost[pos-1] += point
+
+for i in range(1, n):
+    cost[i] += cost[tree[i]]    
+
+print(*cost)
+'''
 '''
 import collections
 

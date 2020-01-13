@@ -100,3 +100,22 @@ Digit Sum
 x = '1234'
 result = sum(map(int, x))
 
+'''
+フェルマーの小定理を利用したnCrの高速化。ただしmod=10^9+7など素数であることが条件。
+'''
+mod = 10 **9 + 7
+def comb(n, r, p=mod):
+    if (r < 0) or (n < r):
+        return 0
+    r = min(r, n - r)
+    return fact[n] * factinv[r] * factinv[n-r] % p
+
+fact = [1, 1]
+factinv = [1, 1]
+inv = [0, 1]
+p = mod
+N = n
+for i in range(2, N + 1):
+    fact.append((fact[-1] * i) % p)
+    inv.append((-inv[p % i] * (p // i)) % p)
+    factinv.append((factinv[-1] * inv[-1]) % p)
