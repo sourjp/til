@@ -1,3 +1,29 @@
+import sys
+sys.setrecursionlimit(10**7)
+
+n = int(input())
+tree = [[] for _ in range(n)]
+for _ in range(n-1):
+    u, v, w = map(int, input().split())
+    u -= 1
+    v -= 1
+    tree[u].append((v, w))
+    tree[v].append((u, w))
+
+ans = [0 for _ in range(n)]
+
+def journey(u, p, bit):
+    ans[u] = bit
+    for v, w in tree[u]:
+        if v == p: continue
+        if w % 2 == 0: journey(v, u, bit)
+        else: journey(v, u, 1-bit)
+    
+journey(0, -1, 0)
+[print(x) for x in ans]
+
+'''
+
 n = int(input())
 tree = [[] for _ in range(n)]
 for _ in range(n-1):
@@ -21,4 +47,5 @@ def journey(next, bit):
         journey(tree[v], bit+w)
     
 journey(tree[0], 0)
-print([x for x in ans])
+[print(x) for x in ans]
+'''
