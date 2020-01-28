@@ -1,16 +1,19 @@
-def calc_m_value(M, A, B, N, h):
-    return min([M[h - A[i]]+B[i] if A[i] <= h else B[i] for i in range(N)])
+h, n = map(int, input().split())
 
-H, N = map(int, input().split())
-A = []
-B = []
-for i in range(N):
+attack = []
+magic = []
+for i in range(n):
     a, b = map(int, input().split())
-    A.append(a)
-    B.append(b)
+    attack.append(a)
+    magic.append(b)
 
-M = [0] * (H+1)
-for i in range(1, H+1):
-    M[i] = calc_m_value(M, A, B, N, i)
+dp = [[float('inf') for _ in range(h+1)] for _ in range(n+1)]
+dp[0][0] = 0
+print(attack, magic)
+for i in range(n):
+    for j in range(h+1):
+        #print(max(dp[i][j], dp[i][j-attack[i]] + magic[i]))
+        if dp[i+1][j] > dp[i][j]: dp[i+1][j] = dp[i][j]
+        if j-attack[i] >= 0 and dp[i+1][j] > dp[i][j-attack[i]] + magic[i]: dp[i+1][j] = dp[i][j-attack[i]] + magic[i]
 
-print(M[H])
+print(dp)
