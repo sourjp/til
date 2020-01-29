@@ -1,4 +1,4 @@
-# 2019/1/3
+# 2020/1/3
     activate状態 -> deaactivate
     pyc
     sys.pathの初期化における参照先は？
