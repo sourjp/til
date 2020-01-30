@@ -2,12 +2,13 @@ x, y, z, k = map(int, input().split())
 A = list(map(int, input().split()))
 B = list(map(int, input().split()))
 C = list(map(int, input().split()))
-result = []
 
-for c in range(z):
-    for b in range(y):
-        for a in range(x):
-            result.append(A[a] + B[b] + C[c])
+def func1():
+    E = [a+b for a in A for b in B]
+    E.sort()
+    if len(E) > k: E = E[-k:]
+    F = [c+e for c in C for e in E]
+    F.sort()
+    return F[-k:][::-1]
 
-result.sort()
-[print(val) for val in result[-k:][::-1]]
+[print(val) for val in func1()]

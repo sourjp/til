@@ -1,19 +1,15 @@
 n = int(input())
-a = list(map(int, input().split()))
-aa = []
-cnt = 0
+A = list(map(int, input().split()))
 mval = float('inf')
-for val in a:
-    if val <= 0:
-        cnt += 1
-        mval = min(abs(val), mval)
-    aa.append(abs(val))
+minus_cnt = 0
+isZero = False
+ans = 0
 
-if cnt % 2 == 0:
-    print(sum(aa))
-else:
-    ans = 0
-    for val in a:
-        if val == mval: ans += mval
-        ans += abs(val)
-    print(ans)
+for a in A:
+    if a < 0: minus_cnt += 1
+    if a == 0: isZero
+    mval = min(mval, abs(a))
+    ans += abs(a)
+
+if isZero or minus_cnt % 2 == 0: print(ans)
+else: print(ans - mval*2)
