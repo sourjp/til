@@ -1,3 +1,7 @@
+/*/__pycache__
 gitignore
 .DS_Store
 ProjectEuler/*.py
+/*/*.db
+/*/*.pickle
+/Database/mongodb
