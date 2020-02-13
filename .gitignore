@@ -5,3 +5,4 @@ ProjectEuler/*.py
 /*/*.db
 /*/*.pickle
 /Database/mongodb
+/*/.coverage
