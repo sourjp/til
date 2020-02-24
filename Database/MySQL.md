@@ -9,3 +9,4 @@
 
 4. mysqlに初期設定したpassowrdでアクセス
 > mysql -u root -p 
+
