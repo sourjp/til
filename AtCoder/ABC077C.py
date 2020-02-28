@@ -1,35 +1,29 @@
-n = int(input())
-input_list = list(map(int, input().split()))
-ans_list = input_list[::-2] + input_list[n%2::2]
-print(*ans_list)
+import bisect
 
-''' TLE
-n = int(input())
-input_list = list(map(int, input().split()))
-q = []
+N = int(input())
+A = sorted(list(map(int, input().split()))) 
+B = sorted(list(map(int, input().split())))
+C = sorted(list(map(int, input().split())))
 
-for i in input_list:
-    if i % 2 == 1:
-        q.append(i)
-    else:
-        q.insert(0, i)
+#print(A)
+#print(B)
+#print(C)
 
-print(' '.join(map(str, q)))
-'''
+a = [0]
+b = [0]
+for i in range(N):
+    ai = bisect.bisect_right(B, A[i])
+    a.append(N-ai+a[i])
 
-''' TLE
-def operation(i, ans_list) -> list:
-    ans_list.append(i)
-    ans_list.reverse()
+    bi = bisect.bisect_right(C, B[i])
+    b.append(N-bi+b[i])
 
-    return ans_list
+#print(a)
+#print(b)
 
-n = int(input())
-input_list = list(map(str, input().split()))
-ans_list = []
+ans = 0
+for i in range(1, N+1):
+    #print(b[-1] - b[-(a[i]-a[i-1])])
+    ans += b[-1] - b[-(a[i]-a[i-1])-1]
 
-for i in input_list:
-    operation(i, ans_list)
-
-print(' '.join(ans_list))
-'''
+print(ans)

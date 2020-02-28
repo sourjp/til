@@ -1,3 +1,10 @@
+# 2020/2/23
+    Django
+        django-admin startproject xxx
+        django-admin startapp yyy
+
+        
+
 # 2020/1/3
     activate状態 -> deaactivate
     pyc
