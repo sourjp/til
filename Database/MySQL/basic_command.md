@@ -12,6 +12,11 @@
      ...    
      <LIMITATION1 OF TABLE>, <LIMITATION2 OF TABLE>);
 
+    - LIMITATION
+        - NOT NULL
+        - DEFAULT 0 // DEFAULT設定がないCOLUMNはNULL
+        - PRIMARY KEY(COLUMN)
+
 # TABLEの削除
     DROP TABLE <TABLE NAME>:
 
@@ -30,6 +35,7 @@
 
 # DATAを挿入する
     INSERT INTO <TABLE NAME> VALUES (ROW1, ROW2, ROW3, ...);
+    - DEFAULT設定がある場合はROWにDEFAULTとかく
 
 # TABLE名を変更する
     RENAMTE TABLE <BEFOR TABLE NAME> to <AFTER TABLE NAME>;
@@ -136,3 +142,124 @@
 
     - また、ORDER BYではSELECTで指定していないものも使える
     - 他にも関数、例えばCOUNT(*)を使って並び替えもできる
+
+# TABLE COPY
+    INSERT INTO <TABLE1> SELECT <COLUMN> FROM <TABLE2>;
+    - GROUP BYなども併用して違うTABLEのSELECT結果を、他のTABLEに挿入できる
+
+    INSERT INTO <TABLE1> SELECT <C1>, <C2>, ... FROM <TABLE2> WHERE <RULE1>;
+
+# DELETE
+    DELETE FROM <TABLE>;
+    DELETE WHERE <RULE> FROM <TABLE>;
+    - TABLE自体の削除はDROP
+    - DELETEはTABLEから該当の行を削除するため、SELECTのようにカラムを指定してもエラーになる
+
+# TRUNCATE
+    TRUNCATE <TABLE>;
+    - TABLEのデータを全て削除する方法。
+    - DELETEは処理が遅い扱いなので、全体を消すならWHEREを使いたい場合にした方が良い
+    - 全体の場合はTRUNCATEが良い
+
+# UPDATE
+    UPDATE <TABLE> SET <COLUMN> = <DATA> WHERE <RULE>;
+    - setで指定したカラムのデータを変更する、WHERE指定がないと全部変えちゃうので注意
+
+    START TRANSACTION;
+    UPDATE <TABLE> SET <C1> = <D1>, <C2> = <D2> WHERE <RULE>;
+    COMMIT;
+
+# VIEW
+    CREATE VIEW TableName(column1, column2) AS SELECT column1, column2 FROM TableName;
+    - VIEWを作成する際は後述のTABLEと同じcolumn位置にする
+    - AS以降は通常のSELECT文と同じ
+
+# SUB QUERY
+    SELECT c1, c2 FROM(SELECT c1, c2 FROM table) AS as_table;
+    - FROM区TABLEを作成してそれを元に返す
+    - この中身がサブクエリと呼ばれる場所
+    - 最後にASがないと出力結果のtableが何か定まらないためつけること
+
+# SCALA QUERY
+    SELECT c1, c2, c3 FROM t1 WHERE c1 > (SELECT AVG(c1) FROM t1);    
+
+    - 例えば、次のよな方法ではerrorが出る
+    SELECT c1, c2, c3 FROM t1 WHERE c1 > AVG(c1);
+        ERROR 1111 (HY000): Invalid use of group function
+
+# CORRELATED SUBQUERY
+    SELECT c1, c2, c3 FROM t1 AS S1 WHERE c3 > (SELECT AVG(c3) FROM t1 AS S2 WHERE S1.c1 = S2.c1 GROUP BY c1);
+
+# 算術関数
+    ABS()
+    MOD()
+    ROUND()
+
+# 文字列関数
+    CONCAT(c1, c2) -> c1c2 // str+strのことで、Postgresなら c1 || c2 とかく
+    LENGTH()
+    LOWER()
+    UPPER()
+    REPLACE(対象文字、置換前の文字、置換後の文字)
+    SUBSTRING(文字 FROM スタート文字数 FOR 文字数) // SUBSTRING(str1 FROM 3 FOR 2)なら3文字から2文字取り出す
+
+# 日付関数
+    SELECT CURRENT_DATE; で現在の日付が取れる
+    SELECT CURRENT_TIME; で現在の時刻が取れる
+    SELECT CURRENT_TIMESTAMP; で上二つの情報が取れる
+
+    EXTRACTを利用することでTIMESTAMPを分解できる
+        SELECT CURRENT_TIMESTAMP,
+            EXTRACT(YEAR FROM CURRENT_TIMESTAMP) AS year, EXTRACT(MONTH FROM CURRENT_TIMESTAMP) AS month, EXTRACT(DAY FROM CURRENT_TIMESTAMP) AS day, EXTRACT(HOUR FROM CURRENT_TIMESTAMP) AS hour, EXTRACT(MINUTE FROM CURRENT_TIMESTAMP) AS minute, EXTRACT(SECOND FROM CURRENT_TIMESTAMP) AS second;
+
+# 変換関数
+    CAST(変換前の値 AS 変換後の型); で変換できる
+    COALESCE(NULLを含んだ列, NULLの変換したい文字列)
+
+# 述語
+    LIKE
+        テーブルの検索のことで、検索文字列の書き方で３種類の評価がある
+        下記の例ならdddが一番先頭から、もしくはどこかで一致、もしくは最後だけ一致といった評価の仕方
+
+        前方一致
+            SELECT * FROM Sample WHERE str LIKE 'ddd%'
+        中間一致
+            SELECT * FROM Sample WHERE str LIKE '%ddd%'
+        後方一致
+            SELECT * FROM Sample WHERE str LIKE '%ddd'
+    
+    BETWEEN
+        間のことでA AND Bとかく。これは <= >= と同じ意味なので注意。
+        要はWHERE a >= 100 AND a <= 200　とWHERE a BETWEEN 100 AND 200 は同じ意味
+
+    IS NULL, IS NOT NULL
+        NULLは算術ではないため = が使えない。なのでWHEREではこれを使う
+        WHERE a IS NULL;
+
+    IN, NOT IN
+        一致文字を指定したいときにORを重ねると大変なので、これを使う
+        WHERE a IN (100, 200, 300);
+    
+        またサブクエリをINに入れることができる
+        要はINのOR条件の候補として、クエリを使って出した出力結果を用いるということ
+
+    EXISTS, NOT EXISTS
+        常に相関サブクエリを引数として、データの有無を確認する
+
+# CASE
+    単純CASEと検索CASEの２種類があるが、検索CASEは単純CASEの機能を包含している
+
+    SELECT table.
+        CASE WHEN xx
+             THEN yy
+             WHEN xx
+             THEN yy
+             ELSE NULL
+        END AS zz
+    FROM table;
+
+    ELSE　NULLはデフォルト動作だが明示的に書くほうが好ましい。(NULLがNOならELSE 0など。)
+    CASE ... のあとはENDで終わること
+
+
+

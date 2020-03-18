@@ -75,3 +75,43 @@
 
     e.g.
     SELECT <COLUMN1>, AVG(<COLUMN2>) FROM <TABLE> GROUP BY <COUMN1> HAVING AVG(<COLUMN2>) >= 2500;
+
+# ビュー機能
+    ビューはテーブルのデータを持つのではなく、SELECT文を保持させておくもの
+    つまりテーブルを別途記録しているわけではなく読み出されるびたにSELECTを実行し結果を返している
+    ビューで作成したTABLEを参照すると、元々のSELECT文を実行し、そこからVIEW TABLE向けのSELECTが実行される
+    多段VIEWも構築できるが、パフォーマンスの問題があるため推奨されない
+    またVIEW TABLE作成時はORDER BYは使えない。
+    情報の出力や集約はviewでできるが集約の場合はTABLEの変更はできない、、
+    結局VIEWはSELECTを実施しているので、本来のTABLEにどのような反映をすればいいのかわからないため
+
+# サブクエリ
+    ビュー機能はTABLEとして保持するが、サブクエリの場合は使い捨てになる
+
+# スカラサブクエリ
+    必ず１行一列だけの戻り値を返すクエリ
+    例えばWHERE区に集約関数は利用できないが、スカラサブクエリを代わりとして使うことができる(AVGなど)
+    単一のデータを返すと言う特徴から、どの場所に当てはめることができる
+    一方で複数の結果を消すクエリにしてしまうと、それはただのサブクエリであり複数の答えを返してしまうので使えない
+
+# 相関サブクエリ
+    クエリとして出力した結果、相関して出力を返したい場合に使う
+
+    
+INSERT INTO SampleMath(m, n, p) VALUES (500, 0, NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (-180, 0, NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (NULL, NULL, NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (NULL, 7, 3);
+INSERT INTO SampleMath(m, n, p) VALUES (NULL, 5, 2);
+
+
+INSERT INTO SampleMath(m, n, p) VALUES (NULL, 4, NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (8, NULL, 3);
+INSERT INTO SampleMath(m, n, p) VALUES (2.27, 1, NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (5.555,2, NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (NULL, 1, NULL);
+INSERT INTO SampleMath(m, n, p) VALUES (8.76, NULL, NULL);
+
+COMMIT;
+NULL); NULL); NULL);
+   

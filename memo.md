@@ -1,3 +1,6 @@
+# はじめに
+書く場所がなかったものを書き留めています。
+
 # 2020/2/23
     Django
         django-admin startproject xxx
