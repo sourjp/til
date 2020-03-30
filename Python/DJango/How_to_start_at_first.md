@@ -1,5 +1,3 @@
-# Djangoのディレクトリ
-
 # Djangoのプロジェクト開始
     django-admin startproject .
 
